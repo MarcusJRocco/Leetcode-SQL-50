@@ -1,10 +1,11 @@
 # Write your MySQL query statement below
-WITH primary_dept AS (
-    SELECT employee_id, department_id, primary_flag, 
-        COUNT(*) OVER (PARTITION BY employee_id) AS dept_count
-    FROM Employee
-)
+SELECT employee_id, department_id
+FROM employee
+WHERE primary_flag = 'Y'
+
+UNION
 
 SELECT employee_id, department_id
-FROM primary_dept
-WHERE primary_flag = 'Y' OR dept_count = 1;
+FROM employee
+GROUP BY employee_id
+HAVING COUNT(*) = 1
